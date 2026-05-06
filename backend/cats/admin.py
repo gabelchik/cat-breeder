@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import Breeder, Cat
 
-# Register your models here.
+
+admin.site.register(Breeder)
+admin.site.register(Cat)
