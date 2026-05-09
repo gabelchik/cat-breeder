@@ -2,18 +2,6 @@ from django.db import models
 from django.conf import settings
 
 
-class Breeder(models.Model):
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='breeder'
-    )
-
-
-    def __str__(self):
-        return f'Breeder: {self.user.username}'
-
-
 class Cat(models.Model):
     name = models.CharField(max_length=50)
     age = models.PositiveIntegerField()
@@ -28,7 +16,7 @@ class Cat(models.Model):
         default='short'
     )
     owner = models.ForeignKey(
-        Breeder,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='cats'
     )

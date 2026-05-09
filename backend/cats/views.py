@@ -1,7 +1,8 @@
 from rest_framework import generics, viewsets, permissions, status
-from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
+
+from django.contrib.auth import get_user_model
 
 from .models import Cat
 from .serializers import UserRegistrationSerializer, CatSerializer
@@ -39,8 +40,8 @@ class CatViewSet(viewsets.ModelViewSet):
 
 
     def get_queryset(self):
-        return Cat.objects.filter(owner=self.request.user.breeder)
+        return Cat.objects.filter(owner=self.request.user)
 
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user.breeder)
+        serializer.save(owner=self.request.user)

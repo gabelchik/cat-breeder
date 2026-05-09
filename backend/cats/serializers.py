@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import Cat, Breeder
+from .models import Cat
 
 
 User = get_user_model()
@@ -32,7 +32,7 @@ class CatSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'age', 'breed', 'fur_length', 'owner', 'owner_info']
         read_only_fields = ['owner']
 
-    owner_info = serializers.ReadOnlyField(source='owner.user.username')
+    owner_info = serializers.ReadOnlyField(source='owner.username')
 
 
     def create(self, validated_data):
