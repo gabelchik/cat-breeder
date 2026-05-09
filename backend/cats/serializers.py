@@ -29,14 +29,17 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 class CatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cat
-        fields = ['id', 'name', 'age', 'breed', 'fur_length', 'owner', 'owner_info']
+        fields = ['id', 'name', 'age', 'breed', 'fur_length', 'fur_length_display','owner', 'owner_info']
         read_only_fields = ['owner']
 
     owner_info = serializers.ReadOnlyField(source='owner.username')
+    fur_length_display = serializers.SerializerMethodField()
 
+    def get_fur_length_display(self, obj):
+        return obj.get_fur_length_display()
 
     def create(self, validated_data):
         request = self.context.get('request')
         validated_data.pop('owner', None)
-        cat = Cat.objects.create(owner=request.user.breeder, **validated_data)
+        cat = Cat.objects.create(owner=request.user, **validated_data)
         return cat

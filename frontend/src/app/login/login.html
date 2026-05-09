@@ -1,0 +1,19 @@
+<div style="max-width: 400px; margin: 50px auto; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 8px;">
+  <h2>Вход</h2>
+  <form (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 16px;">
+      <mat-label>Имя пользователя</mat-label>
+      <input matInput type="text" [(ngModel)]="username" name="username" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 16px;">
+      <mat-label>Пароль</mat-label>
+      <input matInput type="password" [(ngModel)]="password" name="password" required>
+    </mat-form-field>
+
+    <div *ngIf="errorMessage" style="color: red; margin-bottom: 16px;">{{ errorMessage }}</div>
+
+    <button mat-raised-button color="primary" type="submit" style="width: 100%;">Войти</button>
+  </form>
+  <p style="margin-top: 16px;">Нет аккаунта? <a routerLink="/register">Зарегистрироваться</a></p>
+</div>

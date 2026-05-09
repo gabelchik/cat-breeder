@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>{{ data.id ? 'Редактировать' : 'Добавить' }} кота</h2>
+<mat-dialog-content>
+  <form (ngSubmit)="onSave()">
+    <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 16px;">
+      <mat-label>Имя</mat-label>
+      <input matInput [(ngModel)]="name" name="name" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 16px;">
+      <mat-label>Возраст</mat-label>
+      <input matInput type="number" [(ngModel)]="age" name="age" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 16px;">
+      <mat-label>Порода</mat-label>
+      <input matInput [(ngModel)]="breed" name="breed" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 16px;">
+      <mat-label>Длина шерсти</mat-label>
+      <mat-select [(ngModel)]="fur_length" name="fur_length" required>
+        <mat-option *ngFor="let opt of furOptions" [value]="opt.value">
+          {{ opt.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Отмена</button>
+  <button mat-raised-button color="primary" (click)="onSave()">Сохранить</button>
+</mat-dialog-actions>

@@ -1,0 +1,43 @@
+<div style="max-width: 900px; margin: 30px auto;">
+  <h2>Мои коты</h2>
+  <button mat-raised-button color="primary" (click)="openCreateDialog()" style="margin-bottom: 16px;">
+    Добавить кота
+  </button>
+
+  <table mat-table [dataSource]="cats" class="mat-elevation-z8" style="width: 100%;">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Имя </th>
+      <td mat-cell *matCellDef="let cat"> {{ cat.name }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="age">
+      <th mat-header-cell *matHeaderCellDef> Возраст </th>
+      <td mat-cell *matCellDef="let cat"> {{ cat.age }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="breed">
+      <th mat-header-cell *matHeaderCellDef> Порода </th>
+      <td mat-cell *matCellDef="let cat"> {{ cat.breed }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="fur_length">
+      <th mat-header-cell *matHeaderCellDef> Шерсть </th>
+      <td mat-cell *matCellDef="let cat"> {{ cat.fur_length_display }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Действия </th>
+      <td mat-cell *matCellDef="let cat">
+        <button mat-icon-button color="accent" (click)="openEditDialog(cat)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteCat(cat.id!)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
