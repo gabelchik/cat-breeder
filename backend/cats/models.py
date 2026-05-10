@@ -6,15 +6,18 @@ class Cat(models.Model):
     name = models.CharField(max_length=50)
     age = models.PositiveIntegerField()
     breed = models.CharField(max_length=50)
+
+    class FurLength(models.TextChoices):
+        SHORT = 'short', 'Короткая'
+        LONG = 'long', 'Длинная'
+        HAIRLESS = 'hairless', 'Без шерсти'
+
     fur_length = models.CharField(
         max_length=10,
-        choices=[
-            ('short', 'Короткая'),
-            ('long', 'Длинная'),
-            ('hairless', 'Лысая'),
-        ],
-        default='short'
+        choices=FurLength.choices,
+        default=FurLength.SHORT,
     )
+
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
