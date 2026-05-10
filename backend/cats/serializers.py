@@ -16,6 +16,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
                     'invalid': 'Введите корректный адрес электронной почты.',
                     'required': 'Email обязателен.',
                     'blank': 'Email обязателен.',
+                    'unique': 'Пользователь с таким email уже существует.'
                 }
             },
             'username': {
@@ -46,10 +47,14 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         }
     )
 
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("Пользователь с таким email уже существует.")
+        return value
 
     def validate(self, data):
         if data['password'] != data['password2']:
-            raise serializers.ValidationError("Пароли не совпадают")
+            raise serializers.ValidationError("Пароли не совпадают.")
         return data
 
     def create(self, validated_data):
