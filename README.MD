@@ -48,7 +48,7 @@ cat-breeder/
 ### 1. Клонировать репозиторий
 
 ```bash
-git clone <https://github.com/gabelchik/cat-breeder.git>
+git clone https://github.com/gabelchik/cat-breeder.git
 cd cat-breeder
 ```
 
