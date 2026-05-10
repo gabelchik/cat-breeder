@@ -46,5 +46,15 @@ services:
         condition: service_started
     restart: always
 
+  frontend:
+    container_name: cat_breeder_frontend
+    build:
+      context: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: always
+
 volumes:
   mysql_data:

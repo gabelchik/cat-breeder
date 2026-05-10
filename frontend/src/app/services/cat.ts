@@ -15,7 +15,7 @@ export interface Cat {
 
 @Injectable({ providedIn: 'root' })
 export class CatService {
-  private baseUrl = 'http://localhost:8000/api/cats/';
+  private baseUrl = '/api/cats/';
 
   constructor(private http: HttpClient) {}
 

@@ -20,7 +20,7 @@ export interface UserInfo {
 
 @Injectable({ providedIn: 'root' })
 export class ChatService {
-  private baseUrl = 'http://localhost:8000/api';
+  private baseUrl = '/api';
   private socket: WebSocket | null = null;
   public messages$ = new Subject<Message>();
 
@@ -30,41 +30,30 @@ export class ChatService {
     return this.http.get<UserInfo[]>(`${this.baseUrl}/users/`);
   }
 
-  getHistory(userId: number): Observable<Message[]> {
-    return this.http.get<Message[]>(`${this.baseUrl}/messages/${userId}/`);
+  getHistory(receiverId: number): Observable<Message[]> {
+    return this.http.get<Message[]>(`${this.baseUrl}/messages/${receiverId}/`);
   }
 
-  connect(recipientId: number): void {
+  connect(receiverId: number): void {
     this.disconnect();
-
     const token = this.authService.getAccessToken();
-    const url = `ws://localhost:8000/ws/chat/${recipientId}/?token=${token}`;
+    const url = `ws://${window.location.host}/ws/chat/${receiverId}/?token=${token}`;
     this.socket = new WebSocket(url);
 
-    this.socket.onopen = () => {
-      console.log('WebSocket connected');
-    };
-
+    this.socket.onopen = () => console.log('WebSocket connected');
     this.socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
       const message: Message = {
         sender: data.sender_id,
-        receiver: recipientId,
+        receiver: receiverId,
         text: data.message,
         sender_username: data.sender_username,
         receiver_username: ''
       };
       this.messages$.next(message);
     };
-
-    this.socket.onerror = (error) => {
-      console.error('WebSocket error:', error);
-    };
-
-    this.socket.onclose = (event) => {
-      console.log('WebSocket closed');
-      this.socket = null;
-    };
+    this.socket.onerror = (error) => console.error('WebSocket error:', error);
+    this.socket.onclose = () => this.socket = null;
   }
 
   send(text: string): void {

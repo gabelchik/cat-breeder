@@ -35,9 +35,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.users = users;
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error('Ошибка загрузки пользователей:', err);
-      }
+      error: (err) => console.error('Ошибка загрузки пользователей:', err)
     });
 
     this.chatService.messages$.subscribe(msg => {
