@@ -31,7 +31,7 @@ export class CatFormComponent {
   furOptions = [
     { value: 'short', label: 'Короткая' },
     { value: 'long', label: 'Длинная' },
-    { value: 'hairless', label: 'Без шерсти' }
+    { value: 'hairless', label: 'Лысая' }
   ];
 
   constructor(

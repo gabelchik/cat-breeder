@@ -10,7 +10,7 @@ class Cat(models.Model):
     class FurLength(models.TextChoices):
         SHORT = 'short', 'Короткая'
         LONG = 'long', 'Длинная'
-        HAIRLESS = 'hairless', 'Без шерсти'
+        HAIRLESS = 'hairless', 'Лысая'
 
     fur_length = models.CharField(
         max_length=10,
