@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>{{ data.id ? 'Редактировать' : 'Добавить' }} кота</h2>
 <mat-dialog-content>
-  <form (ngSubmit)="onSave()">
+  <form (ngSubmit)="onSave()" #catForm="ngForm">
     <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 16px;">
       <mat-label>Имя</mat-label>
       <input matInput [(ngModel)]="name" name="name" required>
@@ -8,12 +8,15 @@
 
     <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 16px;">
       <mat-label>Возраст</mat-label>
-      <input matInput type="number" [(ngModel)]="age" name="age" required>
+      <input matInput type="number" [(ngModel)]="age" name="age" required min="1">
     </mat-form-field>
 
     <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 16px;">
       <mat-label>Порода</mat-label>
-      <input matInput [(ngModel)]="breed" name="breed" required>
+      <input matInput [(ngModel)]="breed" name="breed" required pattern="[A-Za-zА-Яа-яЁё\s]*" #breedControl="ngModel">
+      <mat-error *ngIf="breedControl.invalid && (breedControl.touched || catForm.submitted)">
+        Порода может содержать только буквы и пробелы
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 16px;">
@@ -28,5 +31,7 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button (click)="onCancel()">Отмена</button>
-  <button mat-raised-button color="primary" (click)="onSave()">Сохранить</button>
+  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="!isFormValid()">
+    Сохранить
+  </button>
 </mat-dialog-actions>

@@ -45,6 +45,7 @@ export class CatFormComponent {
   }
 
   onSave(): void {
+    if (!this.isFormValid()) return;
     const cat: Cat = {
       name: this.name,
       age: this.age,
@@ -56,5 +57,12 @@ export class CatFormComponent {
 
   onCancel(): void {
     this.dialogRef.close();
+  }
+
+  isFormValid(): boolean {
+    const nameOk = !!this.name && this.name.trim().length > 0;
+    const ageOk = this.age > 0;
+    const breedOk = !!this.breed && /^[A-Za-zА-Яа-яЁё\s]+$/.test(this.breed);
+    return nameOk && ageOk && breedOk;
   }
 }
