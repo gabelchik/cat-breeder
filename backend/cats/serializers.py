@@ -10,15 +10,47 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'email', 'password', 'password2']
 
-    password = serializers.CharField(write_only=True, min_length=8)
-    password2 = serializers.CharField(write_only=True, min_length=8)
+        extra_kwargs = {
+            'email': {
+                'error_messages': {
+                    'invalid': 'Введите корректный адрес электронной почты.',
+                    'required': 'Email обязателен.',
+                    'blank': 'Email обязателен.',
+                }
+            },
+            'username': {
+                'error_messages': {
+                    'required': 'Имя пользователя обязательно.',
+                    'blank': 'Имя пользователя обязательно.',
+                }
+            }
+        }
+
+    password = serializers.CharField(
+        write_only=True,
+        min_length=8,
+        error_messages={
+            'min_length': 'Пароль должен содержать не менее 8 символов.',
+            'blank': 'Пароль обязателен.',
+            'required': 'Пароль обязателен.',
+        }
+    )
+
+    password2 = serializers.CharField(
+        write_only=True,
+        min_length=8,
+        error_messages={
+            'min_length': 'Пароль должен содержать не менее 8 символов.',
+            'blank': 'Подтверждение пароля обязательно.',
+            'required': 'Подтверждение пароля обязательно.',
+        }
+    )
 
 
     def validate(self, data):
         if data['password'] != data['password2']:
-            raise serializers.ValidationError('Пароли не совпадают')
+            raise serializers.ValidationError("Пароли не совпадают")
         return data
-
 
     def create(self, validated_data):
         validated_data.pop('password2')

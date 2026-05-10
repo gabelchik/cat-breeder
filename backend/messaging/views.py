@@ -1,7 +1,7 @@
 from rest_framework import generics, permissions
 
 from django.contrib.auth import get_user_model
-from django.db import models as db_models
+from django.db.models import Q
 
 from .models import Message
 from .serializers import UserSerializer, MessageSerializer
@@ -11,9 +11,14 @@ User = get_user_model()
 
 
 class UserListView(generics.ListAPIView):
-    queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        current_user = self.request.user
+        return User.objects.exclude(
+            Q(id=current_user.id) | Q(is_superuser=True)
+        )
 
 
 class MessageListView(generics.ListAPIView):
@@ -25,6 +30,6 @@ class MessageListView(generics.ListAPIView):
         other_user_id = self.kwargs['user_id']
         current_user = self.request.user
         return Message.objects.filter(
-            (db_models.Q(sender=current_user, receiver_id=other_user_id) |
-             db_models.Q(sender_id=other_user_id, receiver=current_user))
+            (Q(sender=current_user, receiver_id=other_user_id) |
+             Q(sender_id=other_user_id, receiver=current_user))
         ).order_by('created_at')

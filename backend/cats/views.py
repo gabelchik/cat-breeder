@@ -13,11 +13,12 @@ User = get_user_model()
 class UserRegistrationView(generics.CreateAPIView):
     queryset = User.objects.all()
     permissions_classes = [permissions.AllowAny]
+    authentication_classes = []
     serializer_class = UserRegistrationSerializer
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid()
+        serializer.is_valid(raise_exception=True)
         user = serializer.save()
 
         refresh = RefreshToken.for_user(user)
